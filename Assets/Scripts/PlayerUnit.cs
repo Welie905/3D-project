@@ -16,6 +16,7 @@ public sealed class PlayerUnit : MonoBehaviour
     private bool deathNotified;
 
     public event Action<PlayerUnit> Died;
+    public event Action<int> LevelChanged;
 
     public Transform Transform => transform;
     public float CurrentHealth => status.CurrentHealth;
@@ -91,7 +92,14 @@ public sealed class PlayerUnit : MonoBehaviour
             return;
         }
 
+        int previousLevel = experience.Level;
         experience.AddExperience(amount);
+
+        while (previousLevel < experience.Level)
+        {
+            previousLevel++;
+            LevelChanged?.Invoke(previousLevel);
+        }
     }
 
     private void TryNotifyDeath()

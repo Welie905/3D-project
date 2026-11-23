@@ -18,6 +18,14 @@ public sealed class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private float verticalVelocity;
 
+    public float MoveSpeed => moveSpeed;
+
+    public void SetMoveSpeed(float value)
+    {
+        moveSpeed = Mathf.Max(0f, value);
+    }
+
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();

@@ -25,9 +25,12 @@ public sealed class WeaponSlot : MonoBehaviour
 
     private float nextAttackTime;
     private ProjectilePool projectilePool;
+    private PlayerUpgradeStats playerUpgradeStats;
 
     private void Awake()
     {
+        playerUpgradeStats = GetComponentInParent<PlayerUpgradeStats>();
+
         if (!ValidateConfiguration())
         {
             enabled = false;
@@ -68,7 +71,7 @@ public sealed class WeaponSlot : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time < nextAttackTime)
+        if (Time.timeScale <= 0f || Time.time < nextAttackTime)
         {
             return;
         }
@@ -135,6 +138,11 @@ public sealed class WeaponSlot : MonoBehaviour
         {
             return;
         }
+
+        float bonus = playerUpgradeStats != null
+            ? playerUpgradeStats.DamageBonus
+            : 0f;
+        projectile.SetDamage(projectileTemplate.Damage + bonus);
 
         if (!projectile.TryGetComponent(out Rigidbody projectileRigidbody))
         {

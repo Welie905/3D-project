@@ -20,6 +20,14 @@ public sealed class Projectile : MonoBehaviour
     private bool isTerminated;
     private ProjectilePool projectilePool;
 
+    public float Damage => damage;
+
+    public void SetDamage(float value)
+    {
+        damage = Mathf.Max(0f, value);
+    }
+
+
     public void BindPool(ProjectilePool owner)
     {
         projectilePool = owner;
